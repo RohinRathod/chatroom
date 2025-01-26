@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Chat App</title>
+</head>
+<body
+
+    <div id="register-page">
+        <div class="register-page-container">
+            <h1 class="title">Create an Account</h1>
+            <form id="registerForm" name="registerForm" action="/register" method="POST">
+                <div class="form-group">
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Username"
+                        autocomplete="off"
+                        class="form-control"
+                        required
+                    />
+                </div>
+                <div class="form-group">
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Email"
+                        autocomplete="off"
+                        class="form-control"
+                        required
+                    />
+                </div>
+                <div class="form-group">
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Password"
+                        autocomplete="off"
+                        class="form-control"
+                        required
+                    />
+                </div>
+                <div class="form-group">
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Confirm Password"
+                        autocomplete="off"
+                        class="form-control"
+                        required
+                    />
+                </div>
+                <div id="mes" style="color: #ff0000"></div>
+                <div class="form-group">
+                    <button
+                        type="submit"
+						id="registerButton"
+                        class="register-submit"
+                        style="color: #ffffff; background-color: green">
+                        <i class="fa-solid fa-user-plus"></i> Register
+                    </button>
+                </div>
+            </form>
+            <div class="login-link"  >
+                <p>Already have an account? <a href="/login">Login here</a></p>
+            </div>
+        </div>
+    </div>
+	<script src="/js/main.js"></script>
+
+</body>
+</html>

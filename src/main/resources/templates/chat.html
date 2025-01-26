@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+<title>Chat App | Spring Boot + WebSocket</title>
+<link rel="stylesheet" href="/css/main.css" />
+<script
+	src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.4/dist/index.min.js"
+	type="module"></script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button/dist/index.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+	integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+body {
+	font-family: Arial, sans-serif;
+	color: #ffffff; 
+}
+
+.chat-container {
+	width: 80%; /* Increase width */
+	max-width: 800px; /* Set a maximum width */
+	margin: 50px auto; /* Center the chat container */
+	background-color: rgba(0, 0, 0, 0.5); /* Slightly darker background */
+	border-radius: 10px; /* Rounded corners */
+	padding: 20px; /* Padding inside the container */
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.7); /* Shadow effect */
+}
+
+#messageArea {
+	height: 400px; /* Increase height */
+	overflow-y: auto; /* Enable scrolling */
+	margin-bottom: 20px; /* Space below the message area */
+}
+
+.form-control {
+	width: calc(100% - 100px); /* Adjust width for input */
+}
+
+.btn {
+	background-color: #007bff; /* Button color */
+	color: white; /* Button text color */
+	border: none; /* Remove border */
+	border-radius: 5px; /* Rounded corners for button */
+	padding: 10px 15px; /* Padding for button */
+	cursor: pointer; /* Pointer cursor on hover */
+}
+
+.btn:hover {
+	background-color: #0056b3; /* Darker button color on hover */
+}
+</style>
+</head>
+<body
+	style="background-position: center; background-repeat: no-repeat; background-image: url('/images/space.jpg'); background-size: cover;">
+	<noscript>
+		<h2>Please enable JavaScript in your browser!!!</h2>
+	</noscript>
+
+	<script>
+		var username = /*[[${username}]]*/''; // Thymeleaf will inject the username here
+	</script>
+
+	<div id="chat-page" class="hidden">
+		<button onclick="window.location.href = '/logout';"
+			style="position: absolute; top: 0; right: 0; background-color: #ff0000; z-index: 999;">
+			Logout</button>
+		<div class="chat-container">
+			<div class="chat-header">
+				<h2>Group Chat</h2>
+			</div>
+			<div class="connecting">Connecting to the chat...</div>
+			<ul id="messageArea"></ul>
+			<span id="usernameraw" th:text="${username}"></span>
+			<form id="messageForm" name="messageForm">
+				<div class="form-group">
+					<div class="input-group clearfix">
+						<input type="text" id="message" placeholder="Message"
+							autocomplete="off" autofocus class="form-control" />
+						<button type="button" class="trigger" style="padding: 10px;">😊</button>
+						<input type="file" id="fileInput" />
+						<button type="submit" class="btn">
+							<i class="fa-solid fa-paper-plane"></i> Send
+						</button>
+					</div>
+				</div>
+			</form>
+			<script type="module">
+                import { EmojiButton } from 'https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.4/dist/index.min.js';
+
+                const picker = new EmojiButton({ autoHide: false });
+                const messageInput = document.getElementById('message');
+                const triggerButton = document.querySelector('.trigger');
+
+                picker.on('emoji', selection => {
+                    messageInput.value += selection.emoji;
+                });
+
+                triggerButton.addEventListener('click', () => picker.togglePicker(triggerButton));
+            </script>
+		</div>
+	</div>
+
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+	<script src="/js/main.js"></script>
+	<script type="text/javascript">
+		window.onbeforeunload = function() {
+			return "Dude, are you sure you want to leave? Think of the kittens!";
+		};
+	</script>
+</body>
+</html>
