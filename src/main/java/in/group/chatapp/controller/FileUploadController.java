@@ -1,5 +1,5 @@
 package in.group.chatapp.controller;
-this is commented because cant share aws secret id
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
