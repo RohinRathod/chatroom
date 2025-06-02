@@ -99,7 +99,7 @@ function send(event) {
               chatMessage.fileName = fileData.name;
               chatMessage.fileUrl = fileData.url;
               sendMessage(chatMessage); // Send via WebSocket
-
+//rohin
               // Remove loading indicator after sending
               document.getElementById("uploadingStatus").remove();
             });
