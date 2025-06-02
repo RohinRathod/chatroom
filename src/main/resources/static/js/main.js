@@ -65,52 +65,65 @@ function onError(error) {
 }
 
 function send(event) {
-	event.preventDefault();
+  event.preventDefault();
   var messageContent = messageInput.value.trim();
   const fileInput = document.querySelector("#fileInput");
-   const file = fileInput ? fileInput.files[0] : null;
+  const file = fileInput ? fileInput.files[0] : null;
 
   if ((messageContent || file) && stompClient) {
     const chatMessage = {
       sender: username,
-       content: messageContent || "",
+      content: messageContent || "",
       type: "CHAT",
     };
-	
-	if (file) {
-	     const formData = new FormData();
-	     formData.append("file", file);
-	     formData.append("sender", username);
-	     formData.append("message", messageContent);
-	// Send the file via API
-	      fetch("/api/uploadFile", {
-	        method: "POST",
-	        body: formData,
-	      })
-	        .then((response) => {
-	          if (response.ok) {
-	            response.json().then((fileData) => {
-	              // Include the uploaded file's URL in the message
-				  chatMessage.fileName = fileData.name;  // Map the file name
-				  chatMessage.fileUrl = fileData.url;
-	              sendMessage(chatMessage); // Send the message via WebSocket
-	            });
-	          } else {
-	            console.error("Failed to upload file");
-	          }
-	        })
-	        .catch((error) => {
-	          console.error("Error uploading file:", error);
-	        });
-	    } else {
-	      sendMessage(chatMessage); // Send the message via WebSocket without a file
-	    }
+
+    // Show a loading message/icon in the chat area
+    const loadingMsg = document.createElement("li");
+    loadingMsg.textContent = "Uploading file...";
+    loadingMsg.setAttribute("id", "uploadingStatus");
+    document.getElementById("messageArea").appendChild(loadingMsg);
+
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("sender", username);
+      formData.append("message", messageContent);
+
+      fetch("/api/uploadFile", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => {
+          if (response.ok) {
+            response.json().then((fileData) => {
+              chatMessage.fileName = fileData.name;
+              chatMessage.fileUrl = fileData.url;
+              sendMessage(chatMessage); // Send via WebSocket
+
+              // Remove loading indicator after sending
+              document.getElementById("uploadingStatus").remove();
+            });
+          } else {
+            loadingMsg.textContent = "❌ File upload failed";
+            console.error("Failed to upload file");
+          }
+        })
+        .catch((error) => {
+          loadingMsg.textContent = "❌ Upload error";
+          console.error("Error uploading file:", error);
+        });
+    } else {
+      sendMessage(chatMessage); // No file case
+      document.getElementById("uploadingStatus").remove(); // Clean if needed
+    }
+
     messageInput.value = "";
-	if (fileInput) {
-	     fileInput.value = ""; // Clear the file input
-	   }
+    if (fileInput) {
+      fileInput.value = "";
+    }
   }
 }
+
 
 
 function sendMessage(chatMessage) {
@@ -174,6 +187,8 @@ function onMessageReceived(payload) {
   messageArea.appendChild(messageElement);
   messageArea.scrollTop = messageArea.scrollHeight;
 }
+
+
 
 function getAvatarColor(messageSender) {
   var hash = 0;

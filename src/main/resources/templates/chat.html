@@ -78,14 +78,22 @@ body {
 			<form id="messageForm" name="messageForm">
 				<div class="form-group">
 					<div class="input-group clearfix">
-						<input type="text" id="message" placeholder="Message"
-							autocomplete="off" autofocus class="form-control" />
-						<button type="button" class="trigger" style="padding: 10px;">😊</button>
-						<input type="file" id="fileInput" />
-						<button type="submit" class="btn">
-							<i class="fa-solid fa-paper-plane"></i> Send
-						</button>
-					</div>
+							<input type="text" id="message" placeholder="Message"
+								autocomplete="off" autofocus class="form-control" />
+
+							<button type="button" class="trigger" style="padding: 10px;">😊</button>
+							
+							<input type="file" id="fileInput" />
+							
+							<!-- Spinner -->
+							<div id="uploadSpinner" style="display: none; color: white; margin-left: 10px;">
+								<i class="fa fa-spinner fa-spin"></i> Uploading...
+							</div>
+
+							<button type="submit" class="btn">
+								<i class="fa-solid fa-paper-plane"></i> Send
+							</button>
+						</div>
 				</div>
 			</form>
 			<script type="module">
